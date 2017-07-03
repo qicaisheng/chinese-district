@@ -25,7 +25,29 @@ public class District {
         Map<String, String> map = AddressParser.getInstance().parse();
         if (!map.containsKey(districtCode)) return null;
 
-        String cityCode = districtCode.substring(4,6).concat("00");
+        String cityCode = new StringBuilder(districtCode.substring(0,4)).append("00").toString();
         return map.get(cityCode);
+    }
+
+    public String getProvince(String districtCode) {
+        if (districtCode.endsWith("00")) return null;
+
+        Map<String, String> map = AddressParser.getInstance().parse();
+        if (!map.containsKey(districtCode)) return null;
+
+        String provinceCode = new StringBuilder(districtCode.substring(0,2)).append("0000").toString();
+        return map.get(provinceCode);
+    }
+
+    public String getFullAddress(String districtCode) throws Exception {
+        if (districtCode.endsWith("00")) return null;
+
+        Map<String, String> map = AddressParser.getInstance().parse();
+        if (!map.containsKey(districtCode)) return null;
+
+        StringBuilder fullAddress = new StringBuilder();
+
+        fullAddress.append(getProvince(districtCode)).append(getCity(districtCode)).append(get(districtCode));
+        return fullAddress.toString();
     }
 }
